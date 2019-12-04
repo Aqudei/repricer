@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Repricer
+namespace Repricer.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for InventoryListView.xaml
     /// </summary>
-    public partial class MainWindow 
+    public partial class InventoryListView : UserControl
     {
-        public MainWindow()
+        public InventoryListView()
         {
             InitializeComponent();
         }
