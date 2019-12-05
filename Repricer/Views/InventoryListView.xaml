@@ -7,8 +7,34 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid>
-        <mah:MetroTabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ProgressBar IsIndeterminate="True" 
+                     Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button x:Name="ImportMF" Margin="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Import MF Inventory (</TextBlock>
+                    <TextBlock Text="{Binding MFItemsCount}" />
+                    <TextBlock>)</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button x:Name="ImportFBA" Margin="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Import FBA Inventory (</TextBlock>
+                    <TextBlock Text="{Binding FBAItemsCount}" />
+                    <TextBlock>)</TextBlock>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <mah:MetroTabControl Grid.Row="2">
             <mah:MetroTabItem Header="MFs">
                 <DataGrid x:Name="MFInventoryItems"/>
             </mah:MetroTabItem>
