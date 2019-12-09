@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:Repricer.Views"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
+             xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             Dialog:DialogParticipation.Register="{Binding}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -131,11 +133,11 @@
                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                   Margin="16,16,8,16">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Sku" Width="2*"/>
-                <DataGridTemplateColumn Header="Title" Width="3*"/>
-                <DataGridTextColumn Header="Age (days)" Width="1*"/>
-                <DataGridTextColumn Header="Rank"/>
-                <DataGridTextColumn Header="Current Price" Width="1*"/>
+                <DataGridTextColumn Header="Sku" Width="2*" Binding="{Binding Sku}"/>
+                <DataGridTemplateColumn Header="Title" Width="3*" />
+                <DataGridTextColumn Header="Age (days)" Width="1*" Binding="{Binding Age}"/>
+                <DataGridTextColumn Header="Rank" Binding="{Binding Rank}"/>
+                <DataGridTextColumn Header="Current Price" Width="1*" Binding="{Binding CurrentPrice}"/>
             </DataGrid.Columns>
         </DataGrid>
 

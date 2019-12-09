@@ -2,10 +2,14 @@
 using Repricer.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoMapper;
+using MahApps.Metro.Controls.Dialogs;
+using Repricer.Models;
 using Unity;
 
 namespace Repricer
@@ -37,6 +41,12 @@ namespace Repricer
         {
             _unityContainer.RegisterSingleton<IWindowManager, WindowManager>();
             _unityContainer.RegisterSingleton<IEventAggregator, EventAggregator>();
+            _unityContainer.RegisterInstance(DialogCoordinator.Instance);
+
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<FBAInventoryItem, InventoryItem>().ForMember(m => m.Sku, opts => opts.MapFrom(source => source.SellerSku)));
+            _unityContainer.RegisterInstance(config.CreateMapper());
+
+            // Database.SetInitializer(new MigrateDatabaseToLatestVersion<RepricerContext, Migrations.Configuration>());
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)

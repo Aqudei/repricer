@@ -6,14 +6,14 @@ namespace Repricer.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    [GeneratedCode("EntityFramework.Migrations", "6.3.0")]
-    public sealed partial class Initial1 : IMigrationMetadata
+    [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
+    public sealed partial class firstMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(firstMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201912041109555_Initial1"; }
+            get { return "201912090819180_firstMigration"; }
         }
         
         string IMigrationMetadata.Source

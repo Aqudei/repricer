@@ -3,12 +3,12 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class firstMigration : DbMigration
     {
         public override void Up()
         {
             CreateTable(
-                "dbo.FBAInventories",
+                "dbo.FBAInventoryItems",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -22,7 +22,7 @@
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.MFInventories",
+                "dbo.ListedItems",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -36,10 +36,10 @@
                         OpenDateTimeZone = c.String(maxLength: 4000),
                         ImageUrl = c.String(maxLength: 4000),
                         ItemIsMarketPlace = c.Boolean(),
-                        ProductIdType = c.Int(nullable: false),
+                        ProductIdType = c.Int(),
                         ZshopShippingFee = c.Double(),
                         ItemNote = c.String(maxLength: 4000),
-                        ItemCondition = c.Int(nullable: false),
+                        ItemCondition = c.Int(),
                         ZshopCategory1 = c.String(maxLength: 4000),
                         ZshopBrowsePath = c.String(maxLength: 4000),
                         ZshopStorefrontFeature = c.String(maxLength: 4000),
@@ -62,8 +62,8 @@
         
         public override void Down()
         {
-            DropTable("dbo.MFInventories");
-            DropTable("dbo.FBAInventories");
+            DropTable("dbo.ListedItems");
+            DropTable("dbo.FBAInventoryItems");
         }
     }
 }
