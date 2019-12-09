@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Repricer.Models
 {
-    class MFInventoryItem
+    class ListedItem
     {
         public int Id { get; set; }
         public string ItemName { get; set; }

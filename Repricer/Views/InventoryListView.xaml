@@ -11,36 +11,22 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ProgressBar IsIndeterminate="True" 
+        <mah:MetroProgressBar IsIndeterminate="True" 
                      Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Button x:Name="ImportMF" Margin="1">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>Import MF Inventory (</TextBlock>
-                    <TextBlock Text="{Binding MFItemsCount}" />
-                    <TextBlock>)</TextBlock>
-                </StackPanel>
-            </Button>
-            <Button x:Name="ImportFBA" Margin="1">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>Import FBA Inventory (</TextBlock>
-                    <TextBlock Text="{Binding FBAItemsCount}" />
-                    <TextBlock>)</TextBlock>
-                </StackPanel>
-            </Button>
+            <Button x:Name="ImportActiveListing" Margin="1" Content="Import Active Listing"/>
+            <Button x:Name="ImportFBAItems" Margin="1" Content="Import FBA Items"/>
         </StackPanel>
-        <mah:MetroTabControl Grid.Row="2">
-            <mah:MetroTabItem Header="MFs">
-                <DataGrid x:Name="MFInventoryItems"/>
-            </mah:MetroTabItem>
-            <mah:MetroTabItem Header="FBAs">
-                <DataGrid x:Name="FBAInventoryItems"/>
-            </mah:MetroTabItem>
-        </mah:MetroTabControl>
+
+        <DataGrid x:Name="InventoryItems" Grid.Row="2"/>
     </Grid>
 </UserControl>

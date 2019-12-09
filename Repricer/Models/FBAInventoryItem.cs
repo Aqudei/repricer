@@ -9,7 +9,6 @@ namespace Repricer.Models
     class FBAInventoryItem
     {
         public int Id { get; set; }
-
         public string SellerSku { get; set; }
         public string FulfillmentChannelSku { get; set; }
         public string Asin { get; set; }

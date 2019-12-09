@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Repricer.Models
 {
-    class MFInventoryMap : ClassMap<MFInventoryItem>
+    class ListedItemMap : ClassMap<ListedItem>
     {
 
         class DateTimeConverter : DefaultTypeConverter
@@ -44,7 +44,7 @@ namespace Repricer.Models
             }
         }
 
-        public MFInventoryMap()
+        public ListedItemMap()
         {
             AutoMap();
             Map(m => m.OpenDate).TypeConverter<DateTimeConverter>();

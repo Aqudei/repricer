@@ -9,69 +9,24 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 
 namespace Repricer.ViewModels
 {
     class InventoryListViewModel : Screen
     {
-        private bool isBusy;
-        private int mFItemsCount;
-        private int fBAItemsCount;
-        private bool importMF;
-        private bool importingFBA;
+        private bool _isBusy;
 
-        public bool ImportingtMF
-        {
-            get => importMF; set
-            {
-                Set(ref importMF, value);
-                NotifyOfPropertyChange(nameof(CanImportMF));
-                NotifyOfPropertyChange(nameof(IsBusy));
+        public BindableCollection<InventoryItem> InventoryItems { get; set; } 
+            = new BindableCollection<InventoryItem>();
 
-            }
-        }
-        public bool ImportingFBA
+        public bool IsBusy
         {
-            get => importingFBA; set
-            {
-                Set(ref importingFBA, value);
-                NotifyOfPropertyChange(nameof(CanImportFBA));
-                NotifyOfPropertyChange(nameof(IsBusy));
-            }
+            get => _isBusy;
+            set => Set(ref _isBusy, value);
         }
 
-        public BindableCollection<MFInventoryItem> MFInventoryItem { get; set; } = new BindableCollection<MFInventoryItem>();
-        public BindableCollection<FBAInventoryItem> FBAInventoryItem { get; set; } = new BindableCollection<FBAInventoryItem>();
-        public bool IsBusy => ImportingtMF || ImportingFBA;
-        //{
-        //    get => isBusy; set
-        //    {
-        //        Set(ref isBusy, value);
-
-        //    }
-        //}
-
-        public int MFItemsCount { get => mFItemsCount; set => Set(ref mFItemsCount, value); }
-        public int FBAItemsCount { get => fBAItemsCount; set => Set(ref fBAItemsCount, value); }
-        public InventoryListViewModel()
-        {
-            Task.Run(LoadItems);
-        }
-
-        private void LoadItems()
-        {
-            using (var db = new RepricerContext())
-            {
-                MFItemsCount = db.MFInventoryItems.Count();
-                FBAItemsCount = db.FBAInventoryItems.Count();
-                MFInventoryItem.AddRange(db.MFInventoryItems.ToList());
-                FBAInventoryItem.AddRange(db.FBAInventoryItems.ToList());
-            }
-        }
-
-        public bool CanImportFBA => !ImportingFBA;
-        public bool CanImportMF => !ImportingtMF;
-        public IEnumerable<IResult> ImportFBA()
+        public IEnumerable<IResult> ImportFBAItems()
         {
             var dialog = new OpenFileDialog();
             var result = dialog.ShowDialog();
@@ -80,10 +35,10 @@ namespace Repricer.ViewModels
                 yield break;
             }
 
+            IsBusy = true;
 
             yield return Task.Run(() =>
             {
-                ImportingFBA = true;
                 using (var reader = new StreamReader(dialog.FileName))
                 using (var csv = new CsvHelper.CsvReader(reader))
                 {
@@ -98,25 +53,32 @@ namespace Repricer.ViewModels
                     {
                         db.FBAInventoryItems.RemoveRange(db.FBAInventoryItems);
                         db.SaveChanges();
-                        FBAItemsCount = 0;
 
                         foreach (var record in records)
                         {
-                            db.FBAInventoryItems.Add(record);
-                            FBAItemsCount++;
+                            var item = db.FBAInventoryItems.Add(record);
                         }
 
                         db.SaveChanges();
                         Debug.WriteLine("FBA Inventories Updated!");
+
                         LoadItems();
                     }
                 }
             }).AsResult();
 
-            ImportingFBA = false;
+            IsBusy = false;
         }
 
-        public IEnumerable<IResult> ImportMF()
+        private void LoadItems()
+        {
+            using (var db = new RepricerContext())
+            {
+
+            }
+        }
+
+        public IEnumerable<IResult> ImportActiveListing()
         {
             var dialog = new OpenFileDialog();
             var result = dialog.ShowDialog();
@@ -127,15 +89,13 @@ namespace Repricer.ViewModels
 
             yield return Task.Run(() =>
             {
-                ImportingtMF = true;
-
                 Debug.WriteLine("Updating MF Inventories...");
                 using (var db = new RepricerContext())
                 {
                     using (var reader = new StreamReader(dialog.FileName))
                     using (var csv = new CsvHelper.CsvReader(reader))
                     {
-                        csv.Configuration.RegisterClassMap<MFInventoryMap>();
+                        csv.Configuration.RegisterClassMap<ListedItemMap>();
                         csv.Configuration.PrepareHeaderForMatch = (h, i) => h.ToLower().Replace("-", "").Replace(" ", "");
                         csv.Configuration.HeaderValidated = null;
                         csv.Configuration.MissingFieldFound = null;
@@ -144,27 +104,25 @@ namespace Repricer.ViewModels
 
                         csv.Configuration.Delimiter = "\t";
 
-                        if (db.MFInventoryItems.Any())
+                        if (db.ListedItems.Any())
                         {
-                            db.MFInventoryItems.RemoveRange(db.MFInventoryItems.ToList());
+                            db.ListedItems.RemoveRange(db.ListedItems.ToList());
                             db.SaveChanges();
                         }
 
-                        MFItemsCount = 0;
-                        var records = csv.GetRecords<MFInventoryItem>();
+                        var records = csv.GetRecords<ListedItem>();
                         foreach (var record in records)
                         {
-                            db.MFInventoryItems.Add(record);
-                            MFItemsCount++;
+                            db.ListedItems.Add(record);
                         }
                         db.SaveChanges();
-                        LoadItems();
+                        // LoadItems();
                         Debug.WriteLine("MF Inventories Updated!");
                     }
                 }
             }).AsResult();
 
-            ImportingtMF = false;
+            IsBusy = false;
         }
     }
 }

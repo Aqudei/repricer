@@ -9,7 +9,7 @@ namespace Repricer.Models
 {
     class RepricerContext : DbContext
     {
-        public DbSet<MFInventoryItem> MFInventoryItems { get; set; }
+        public DbSet<ListedItem> ListedItems { get; set; }
         public DbSet<FBAInventoryItem> FBAInventoryItems { get; set; }
 
     }

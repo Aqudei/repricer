@@ -55,7 +55,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>721F5E77E810B149D3D0EBD1C3DFE4C8E9012C9F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>EEEB1B9622C0EAD1A482BFBFB22C45A74030A59E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Repricer_TemporaryKey.pfx</ManifestKeyFile>
@@ -159,9 +159,10 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FBAInventoryMap.cs" />
-    <Compile Include="Models\MFInventoryItem.cs" />
+    <Compile Include="Models\InventoryItem.cs" />
+    <Compile Include="Models\ListedItem.cs" />
     <Compile Include="Models\FBAInventoryItem.cs" />
-    <Compile Include="Models\MFInventoryMap.cs" />
+    <Compile Include="Models\ListedItemMap.cs" />
     <Compile Include="Models\RepricerContext.cs" />
     <Compile Include="ViewModels\InventoryListViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
