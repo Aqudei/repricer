@@ -78,6 +78,17 @@ namespace Repricer.ViewModels
             {
                 InventoryItems.Clear();
                 InventoryItems.AddRange(db.FBAInventoryItems.ProjectTo<InventoryItem>(_mapper.ConfigurationProvider));
+
+                foreach (var inventoryItem in InventoryItems)
+                {
+                    var item = db.ListedItems.FirstOrDefault(i => i.SellerSku == inventoryItem.Sku);
+                    if (item == null)
+                        continue;
+
+                    inventoryItem.Title = item.ItemName;
+                    inventoryItem.CurrentPrice = item.Price;
+                    inventoryItem.Status = item.ItemNote;
+                }
             }
         }
 

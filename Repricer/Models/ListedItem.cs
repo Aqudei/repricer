@@ -16,7 +16,7 @@ namespace Repricer.Models
         public string ItemDescription { get; set; }
         public string ListingId { get; set; }
         public string SellerSku { get; set; }
-        public double Price { get; set; }
+        public decimal Price { get; set; }
         public int? Quantity { get; set; }
 
         public DateTime? OpenDate { get; set; }
@@ -24,7 +24,7 @@ namespace Repricer.Models
         public string ImageUrl { get; set; }
         public bool? ItemIsMarketPlace { get; set; }
         public int? ProductIdType { get; set; }
-        public double? ZshopShippingFee { get; set; }
+        public decimal? ZshopShippingFee { get; set; }
         public string ItemNote { get; set; }
         public int? ItemCondition { get; set; }
         public string ZshopCategory1 { get; set; }

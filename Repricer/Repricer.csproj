@@ -149,6 +149,10 @@
     <Compile Include="Migrations\201912090819180_firstMigration.designer.cs">
       <DependentUpon>201912090819180_firstMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912090920520_doubleToDecimal.cs" />
+    <Compile Include="Migrations\201912090920520_doubleToDecimal.designer.cs">
+      <DependentUpon>201912090920520_doubleToDecimal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FBAInventoryMap.cs" />
     <Compile Include="Models\InventoryItem.cs" />
@@ -193,6 +197,9 @@
     </Compile>
     <EmbeddedResource Include="Migrations\201912090819180_firstMigration.resx">
       <DependentUpon>201912090819180_firstMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912090920520_doubleToDecimal.resx">
+      <DependentUpon>201912090920520_doubleToDecimal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

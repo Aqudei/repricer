@@ -129,12 +129,21 @@
 
         <DataGrid x:Name="InventoryItems" 
                   AutoGenerateColumns="False"
-                  Grid.Row="2"
+                  Grid.Row="2" Grid.Column="0"
                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                   Margin="16,16,8,16">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Sku" Width="2*" Binding="{Binding Sku}"/>
-                <DataGridTemplateColumn Header="Title" Width="3*" />
+                <DataGridTemplateColumn Header="Title" Width="3*" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding Title}"/>
+                                <TextBlock Text="{Binding Status}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Age (days)" Width="1*" Binding="{Binding Age}"/>
                 <DataGridTextColumn Header="Rank" Binding="{Binding Rank}"/>
                 <DataGridTextColumn Header="Current Price" Width="1*" Binding="{Binding CurrentPrice}"/>

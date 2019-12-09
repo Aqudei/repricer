@@ -43,7 +43,12 @@ namespace Repricer
             _unityContainer.RegisterSingleton<IEventAggregator, EventAggregator>();
             _unityContainer.RegisterInstance(DialogCoordinator.Instance);
 
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<FBAInventoryItem, InventoryItem>().ForMember(m => m.Sku, opts => opts.MapFrom(source => source.SellerSku)));
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<FBAInventoryItem, InventoryItem>()
+                    .ForMember(m => m.Sku, opts => opts.MapFrom(source => source.SellerSku));
+
+            });
             _unityContainer.RegisterInstance(config.CreateMapper());
 
             // Database.SetInitializer(new MigrateDatabaseToLatestVersion<RepricerContext, Migrations.Configuration>());
