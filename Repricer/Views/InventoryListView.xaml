@@ -128,6 +128,9 @@
         </StackPanel>
 
         <DataGrid x:Name="InventoryItems" 
+                  IsReadOnly="True"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
                   AutoGenerateColumns="False"
                   Grid.Row="2" Grid.Column="0"
                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
@@ -138,8 +141,8 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding Title}"/>
-                                <TextBlock Text="{Binding Status}"/>
+                                <TextBlock Text="{Binding Title}" TextWrapping="Wrap"/>
+                                <TextBlock Text="{Binding ConditionType}"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

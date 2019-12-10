@@ -47,7 +47,6 @@ namespace Repricer
             {
                 cfg.CreateMap<FBAInventoryItem, InventoryItem>()
                     .ForMember(m => m.Sku, opts => opts.MapFrom(source => source.SellerSku));
-
             });
             _unityContainer.RegisterInstance(config.CreateMapper());
 

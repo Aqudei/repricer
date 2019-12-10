@@ -10,7 +10,7 @@ namespace Repricer.Models
     {
         private string _title;
         private decimal _currentPrice;
-        private string _status;
+        private string _conditionType;
         public string Sku { get; set; }
 
         public string Title
@@ -28,10 +28,10 @@ namespace Repricer.Models
             set => Set(ref _currentPrice, value);
         }
 
-        public string Status
+        public string ConditionType
         {
-            get => _status;
-            set => Set(ref _status, value);
+            get => _conditionType;
+            set => Set(ref _conditionType, value);
         }
     }
 }
