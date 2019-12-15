@@ -153,6 +153,14 @@
     <Compile Include="Migrations\201912090920520_doubleToDecimal.designer.cs">
       <DependentUpon>201912090920520_doubleToDecimal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201912090941026_random.cs" />
+    <Compile Include="Migrations\201912090941026_random.designer.cs">
+      <DependentUpon>201912090941026_random.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201912090942474_random1.cs" />
+    <Compile Include="Migrations\201912090942474_random1.designer.cs">
+      <DependentUpon>201912090942474_random1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FBAInventoryMap.cs" />
     <Compile Include="Models\InventoryItem.cs" />
@@ -200,6 +208,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201912090920520_doubleToDecimal.resx">
       <DependentUpon>201912090920520_doubleToDecimal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912090941026_random.resx">
+      <DependentUpon>201912090941026_random.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201912090942474_random1.resx">
+      <DependentUpon>201912090942474_random1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

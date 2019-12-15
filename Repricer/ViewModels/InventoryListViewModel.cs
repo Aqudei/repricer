@@ -87,7 +87,8 @@ namespace Repricer.ViewModels
 
                     inventoryItem.Title = item.ItemName;
                     inventoryItem.CurrentPrice = item.Price;
-                    inventoryItem.Status = item.ItemNote;
+                    inventoryItem.Age = item.OpenDate.HasValue ? (int)(DateTime.Now - item.OpenDate.Value).TotalDays : -1;
+                    //inventoryItem.ConditionType = item.ItemNote;
                 }
             }
         }
