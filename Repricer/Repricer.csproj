@@ -55,7 +55,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>EEEB1B9622C0EAD1A482BFBFB22C45A74030A59E</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>7341C4A06D0B8CA6CC07FD1F520572E1141B91F6</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>Repricer_TemporaryKey.pfx</ManifestKeyFile>
