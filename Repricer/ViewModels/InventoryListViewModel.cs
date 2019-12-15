@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MahApps.Metro.Controls.Dialogs;
@@ -36,7 +37,10 @@ namespace Repricer.ViewModels
             _dialogCoordinator = dialogCoordinator;
 
             Task.Run(() => LoadItems());
+
         }
+
+
 
         public IEnumerable<IResult> ImportFBAItems()
         {
@@ -44,30 +48,47 @@ namespace Repricer.ViewModels
             var result = dialog.ShowDialog();
             if (result.HasValue && result.Value)
             {
-                yield return Task.Run(() =>
+                yield return Task.Run(async () =>
                 {
-                    using (var reader = new StreamReader(dialog.FileName))
-                    using (var csv = new CsvHelper.CsvReader(reader))
+
+                    var controller = await _dialogCoordinator.ShowProgressAsync(this, "Importing FBA Items", "Please wait while importing your FBA items.\nThis could take some time depending on the numbers of items in your Active Listing.");
+                    controller.SetIndeterminate();
+
+                    try
                     {
-                        csv.Configuration.PrepareHeaderForMatch = (h, i) => h.ToLower().Replace("-", "").Replace(" ", "");
-                        csv.Configuration.HeaderValidated = null;
-                        csv.Configuration.MissingFieldFound = null;
-
-                        csv.Configuration.Delimiter = "\t";
-                        var records = csv.GetRecords<FBAInventoryItem>();
-                        Debug.WriteLine("Updating FBA Inventories...");
-                        using (var db = new RepricerContext())
+                        using (var reader = new StreamReader(dialog.FileName))
+                        using (var csv = new CsvHelper.CsvReader(reader))
                         {
-                            db.FBAInventoryItems.RemoveRange(db.FBAInventoryItems);
-                            db.SaveChanges();
+                            csv.Configuration.PrepareHeaderForMatch =
+                                (h, i) => h.ToLower().Replace("-", "").Replace(" ", "");
+                            csv.Configuration.HeaderValidated = null;
+                            csv.Configuration.MissingFieldFound = null;
 
+                            csv.Configuration.Delimiter = "\t";
+                            var records = csv.GetRecords<FBAInventoryItem>();
+                            Debug.WriteLine("Updating FBA Inventories...");
+                            using (var db = new RepricerContext())
+                            {
+                                db.FBAInventoryItems.RemoveRange(db.FBAInventoryItems);
+                                db.SaveChanges();
 
-                            var item = db.FBAInventoryItems.AddRange(records.ToList());
-                            db.SaveChanges();
-                            Debug.WriteLine("FBA Inventories Updated!");
+                                var item = db.FBAInventoryItems.AddRange(records.ToList());
+                                db.SaveChanges();
+                                Debug.WriteLine("FBA Inventories Updated!");
+                            }
+
                             LoadItems();
                         }
                     }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+                    finally
+                    {
+                        await controller.CloseAsync();
+                    }
+
                 }).AsResult();
             }
         }
@@ -105,36 +126,49 @@ namespace Repricer.ViewModels
                     var controller = await _dialogCoordinator.ShowProgressAsync(this, "Import Active Listing", "Please wait while importing your active listing\nThis could take some time depending on the numbers of items in your Active Listing.");
                     controller.SetIndeterminate();
 
-                    Debug.WriteLine("Updating MF Inventories...");
-
-                    using (var db = new RepricerContext())
+                    try
                     {
-                        using (var reader = new StreamReader(dialog.FileName))
-                        using (var csv = new CsvHelper.CsvReader(reader))
+                        Debug.WriteLine("Updating MF Inventories...");
+
+                        using (var db = new RepricerContext())
                         {
-                            csv.Configuration.RegisterClassMap<ListedItemMap>();
-                            csv.Configuration.PrepareHeaderForMatch = (h, i) => h.ToLower().Replace("-", "").Replace(" ", "");
-                            csv.Configuration.HeaderValidated = null;
-                            csv.Configuration.MissingFieldFound = null;
-                            // csv.Configuration.BadDataFound = null;
-                            csv.Configuration.IgnoreQuotes = true;
-
-                            csv.Configuration.Delimiter = "\t";
-
-                            if (db.ListedItems.Any())
+                            using (var reader = new StreamReader(dialog.FileName))
+                            using (var csv = new CsvHelper.CsvReader(reader))
                             {
-                                db.ListedItems.RemoveRange(db.ListedItems.ToList());
-                                db.SaveChanges();
-                            }
+                                csv.Configuration.RegisterClassMap<ListedItemMap>();
+                                csv.Configuration.PrepareHeaderForMatch =
+                                    (h, i) => h.ToLower().Replace("-", "").Replace(" ", "");
+                                csv.Configuration.HeaderValidated = null;
+                                csv.Configuration.MissingFieldFound = null;
+                                // csv.Configuration.BadDataFound = null;
+                                csv.Configuration.IgnoreQuotes = true;
 
-                            var records = csv.GetRecords<ListedItem>();
-                            db.ListedItems.AddRange(records.ToList());
-                            db.SaveChanges();
-                            // LoadItems();
-                            Debug.WriteLine("MF Inventories Updated!");
-                            await controller.CloseAsync();
+                                csv.Configuration.Delimiter = "\t";
+
+                                if (db.ListedItems.Any())
+                                {
+                                    db.ListedItems.RemoveRange(db.ListedItems.ToList());
+                                    db.SaveChanges();
+                                }
+
+                                var records = csv.GetRecords<ListedItem>();
+                                db.ListedItems.AddRange(records.ToList());
+                                db.SaveChanges();
+                                // LoadItems();
+                                Debug.WriteLine("MF Inventories Updated!");
+
+                            }
                         }
                     }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
+                    finally
+                    {
+                        await controller.CloseAsync();
+                    }
+
                 }).AsResult();
             }
         }
