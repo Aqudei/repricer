@@ -20,7 +20,7 @@ namespace Repricer.ViewModels
         public MainViewModel(IDialogCoordinator dialogCoordinator)
         {
             _dialogCoordinator = dialogCoordinator;
-            ActivateItem(IoC.Get<InventoryListViewModel>());
+
 
             Task.Run(() => CheckExistingDb());
         }
@@ -43,6 +43,8 @@ namespace Repricer.ViewModels
                         File.Delete(sdf[0]);
                     }
                 }
+
+                ActivateItem(IoC.Get<InventoryListViewModel>());
             });
         }
     }
