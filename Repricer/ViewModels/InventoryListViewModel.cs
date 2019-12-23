@@ -13,6 +13,9 @@ using System.Windows;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MahApps.Metro.Controls.Dialogs;
+using RepricerPriceDataApiClientTypes.Models;
+using RepricerPriceDataApiClientInterfaces;
+using RepricerPriceDataApiClient;
 
 namespace Repricer.ViewModels
 {
@@ -21,6 +24,9 @@ namespace Repricer.ViewModels
         private readonly IMapper _mapper;
         private readonly IDialogCoordinator _dialogCoordinator;
         private bool _isBusy;
+        private List<PricedOffersResultWithAttribute> _priceResults = new List<PricedOffersResultWithAttribute>();
+
+        private IPricingQueryClient _client = new PricingQueryClient();
 
         public BindableCollection<InventoryItem> InventoryItems { get; set; }
             = new BindableCollection<InventoryItem>();
@@ -39,8 +45,6 @@ namespace Repricer.ViewModels
             Task.Run(() => LoadItems());
 
         }
-
-
 
         public IEnumerable<IResult> ImportFBAItems()
         {
@@ -109,7 +113,77 @@ namespace Repricer.ViewModels
                     inventoryItem.Title = item.ItemName;
                     inventoryItem.CurrentPrice = item.Price;
                     inventoryItem.Age = item.OpenDate.HasValue ? (int)(DateTime.Now - item.OpenDate.Value).TotalDays : -1;
-                    //inventoryItem.ConditionType = item.ItemNote;
+
+
+                }
+            }
+
+            QueryRemote();
+        }
+
+        private void QueryRemote()
+        {
+            _priceResults.Clear();
+
+            var authBag = new UserCredentialBag
+            {
+                MarketplaceID = "ATVPDKIKX0DER",
+                Password = "xxxx",
+                SellerID = "yyyy",
+                UserID = "zzzz"
+            };
+
+            var responseTokens = new List<string>();
+            var asinList = new List<string>();
+            var queryRequest = new SubmitAsinsForQueryRequest();
+
+            for (int i = 0; i < InventoryItems.Count; i = i + 100)
+            {
+                var items = InventoryItems.Skip(i).Take(100);
+                foreach (var item in items)
+                {
+                    asinList.Add(item.Asin);
+                }
+                queryRequest.UserBag = authBag;
+                queryRequest.Asins = asinList;
+                var response = _client.SubmitAsinListToQueue(queryRequest);
+                if (!response.IsSuccessful)
+                    return;
+
+                responseTokens.Add(response.Token);
+            }
+
+            var priceResultRequestQuery = new GetPriceQueryResultRequest();
+            priceResultRequestQuery.UserBag = authBag;
+            bool isWaiting = true;
+            GetPriceQueryResultResponse priceResponse = null;
+
+            foreach (var token in responseTokens)
+            {
+                while (isWaiting)
+                {
+                    priceResultRequestQuery.Token = token;
+                    priceResponse = _client.GetPriceQueryResult(priceResultRequestQuery);
+                    if (!priceResponse.IsSuccessful)
+                        break;
+
+                    isWaiting = priceResponse.PriceQueryResultStatusId == (int)RepricerPriceDataApiClientTypes.PriceQueryResultStatus.InProcess;
+                }
+
+                if (priceResponse == null || !priceResponse.IsSuccessful || priceResponse.PriceQueryResultStatusId != (int)RepricerPriceDataApiClientTypes.PriceQueryResultStatus.Completed)
+                    break;
+
+                foreach (var priceResult in priceResponse.AsinPriceResults)
+                {
+                    _priceResults.Add(priceResult.PriceResult);
+
+                    if (priceResult.PriceResult.SalesRankList != null && priceResult.PriceResult.SalesRankList.Count > 0)
+                    {
+                        var displayedItem = InventoryItems.FirstOrDefault(i => i.Asin == priceResult.PriceResult.Asin);
+                        if (displayedItem == null)
+                            continue;
+                        displayedItem.Rank = priceResult.PriceResult.SalesRankList[0].RankkBackingField;
+                    }
                 }
             }
         }

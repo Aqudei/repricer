@@ -11,6 +11,8 @@ namespace Repricer.Models
         private string _title;
         private decimal _currentPrice;
         private string _conditionType;
+        private int rank;
+
         public string Sku { get; set; }
 
         public string Title
@@ -19,8 +21,10 @@ namespace Repricer.Models
             set => Set(ref _title, value);
         }
 
+        public string Asin { get; set; }
+
         public int Age { get; set; }
-        public int Rank { get; set; }
+        public int Rank { get => rank; set => Set(ref rank, value); }
 
         public decimal CurrentPrice
         {

@@ -242,7 +242,20 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\RepricerPriceDataApiClientSample\RepricerPriceDataApiClientInterfaces\RepricerPriceDataApiClientInterfaces.csproj">
+      <Project>{297cd4c3-9d3d-4db6-8563-e81d0ae5c837}</Project>
+      <Name>RepricerPriceDataApiClientInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RepricerPriceDataApiClientSample\RepricerPriceDataApiClientTypes\RepricerPriceDataApiClientTypes.csproj">
+      <Project>{bb20ced2-43a6-4b5d-9039-c6daf1283166}</Project>
+      <Name>RepricerPriceDataApiClientTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RepricerPriceDataApiClientSample\RepricerPriceDataApiClient\RepricerPriceDataApiClient.csproj">
+      <Project>{33723b91-4bec-42f2-88b2-397b73b03f68}</Project>
+      <Name>RepricerPriceDataApiClient</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

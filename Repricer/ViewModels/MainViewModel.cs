@@ -27,25 +27,25 @@ namespace Repricer.ViewModels
 
         private void CheckExistingDb()
         {
-            Execute.OnUIThread(async () =>
-            {
-                var sdf = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.sdf",
-                    SearchOption.TopDirectoryOnly);
+            //Execute.OnUIThread(async () =>
+            //{
+            //    var sdf = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.sdf",
+            //        SearchOption.TopDirectoryOnly);
 
-                if (sdf.Length > 0)
-                {
+            //    if (sdf.Length > 0)
+            //    {
 
-                    var result =
-                        await _dialogCoordinator.ShowMessageAsync(this, "Please Confirm Action", $"I found existing database file at {sdf[0]}.\nDo you want to delete it ? ",
-                            MessageDialogStyle.AffirmativeAndNegative);
-                    if (result == MessageDialogResult.Affirmative)
-                    {
-                        File.Delete(sdf[0]);
-                    }
-                }
+            //        var result =
+            //            await _dialogCoordinator.ShowMessageAsync(this, "Please Confirm Action", $"I found existing database file at {sdf[0]}.\nDo you want to delete it ? ",
+            //                MessageDialogStyle.AffirmativeAndNegative);
+            //        if (result == MessageDialogResult.Affirmative)
+            //        {
+            //            File.Delete(sdf[0]);
+            //        }
+            //    }
 
                 ActivateItem(IoC.Get<InventoryListViewModel>());
-            });
+            //});
         }
     }
 }
