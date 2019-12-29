@@ -167,6 +167,7 @@
     <Compile Include="Models\ListedItem.cs" />
     <Compile Include="Models\FBAInventoryItem.cs" />
     <Compile Include="Models\ListedItemMap.cs" />
+    <Compile Include="Models\PriceInfo.cs" />
     <Compile Include="Models\RepricerContext.cs" />
     <Compile Include="ViewModels\InventoryListViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -180,6 +181,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Wpf\SubConditionToStringConverter.cs" />
     <Page Include="Views\InventoryListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -256,6 +258,7 @@
       <Name>RepricerPriceDataApiClient</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -27,6 +27,7 @@ namespace Repricer.ViewModels
         private List<PricedOffersResultWithAttribute> _priceResults = new List<PricedOffersResultWithAttribute>();
 
         private IPricingQueryClient _client = new PricingQueryClient();
+        private InventoryItem selectedInventoryItem;
 
         public BindableCollection<InventoryItem> InventoryItems { get; set; }
             = new BindableCollection<InventoryItem>();
@@ -43,7 +44,93 @@ namespace Repricer.ViewModels
             _dialogCoordinator = dialogCoordinator;
 
             Task.Run(() => LoadItems());
+            Task.Run(() => PopulateOfferPrices());
+        }
 
+        private void PopulateOfferPrices()
+        {
+            var auth = new UserCredentialBag
+            {
+
+                MarketplaceID = "ATVPDKIKX0DER",
+                Password = "xxxx",
+                SellerID = "yyyy",
+                UserID = "zzzz"
+            };
+            var tokens = new List<string>();
+            var request = new SubmitAsinsForQueryRequest();
+            request.UserBag = auth;
+
+            for (int i = 0; i < InventoryItems.Count; i = i + 20)
+            {
+                var items = InventoryItems.Skip(i).Take(20);
+                request.Asins = new List<string>();
+                foreach (var item in items)
+                {
+                    request.Asins.Add(item.Asin);
+                }
+
+                var response = _client.SubmitAsinListToQueue(request);
+                if (response.IsSuccessful)
+                {
+                    tokens.Add(response.Token);
+                }
+            }
+
+            foreach (var token in tokens)
+            {
+                var priceRequest = new GetPriceQueryResultRequest
+                {
+                    Token = token,
+                    UserBag = auth
+                };
+
+                var priceResponse = _client.GetPriceQueryResult(priceRequest);
+                if (priceResponse.IsSuccessful)
+                {
+                    foreach (var priceAsinResponse in priceResponse.AsinPriceResults)
+                    {
+                        var inventoryItem = InventoryItems.FirstOrDefault(i => i.Asin == priceAsinResponse.PriceResult.Asin);
+                        if (inventoryItem != null)
+                        {
+                            inventoryItem.Rank = priceAsinResponse.PriceResult.SalesRankList[0].RankkBackingField;
+                            foreach (var priceResultLowestUsedOffer in priceAsinResponse.PriceResult.LowestUsedOffers)
+                            {
+                                if (priceResultLowestUsedOffer.Offer.IsBuyBox)
+                                {
+                                    inventoryItem.BuyBoxes.Add(new PriceInfo
+                                    {
+                                        ConditionCode = priceResultLowestUsedOffer.Offer.ConditionCode,
+                                        SubConditionCode = priceResultLowestUsedOffer.Offer.SubConditionCode,
+                                        LandedPrice = priceResultLowestUsedOffer.Offer.LandedPrice
+                                    });
+                                    continue;
+                                }
+
+                                if (priceResultLowestUsedOffer.Offer.IsFba)
+                                {
+                                    inventoryItem.FBAs.Add(new PriceInfo
+                                    {
+                                        ConditionCode = priceResultLowestUsedOffer.Offer.ConditionCode,
+                                        SubConditionCode = priceResultLowestUsedOffer.Offer.SubConditionCode,
+                                        LandedPrice = priceResultLowestUsedOffer.Offer.LandedPrice
+                                    });
+
+                                }
+                                else
+                                {
+                                    inventoryItem.MFs.Add(new PriceInfo
+                                    {
+                                        ConditionCode = priceResultLowestUsedOffer.Offer.ConditionCode,
+                                        SubConditionCode = priceResultLowestUsedOffer.Offer.SubConditionCode,
+                                        LandedPrice = priceResultLowestUsedOffer.Offer.LandedPrice
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public IEnumerable<IResult> ImportFBAItems()
@@ -118,7 +205,7 @@ namespace Repricer.ViewModels
                 }
             }
 
-            QueryRemote();
+            PopulateOfferPrices();
         }
 
         private void QueryRemote()
@@ -179,6 +266,7 @@ namespace Repricer.ViewModels
 
                     if (priceResult.PriceResult.SalesRankList != null && priceResult.PriceResult.SalesRankList.Count > 0)
                     {
+                        Debug.WriteLine(priceResult.PriceResult.Asin);
                         var displayedItem = InventoryItems.FirstOrDefault(i => i.Asin == priceResult.PriceResult.Asin);
                         if (displayedItem == null)
                             continue;

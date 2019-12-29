@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,5 +38,10 @@ namespace Repricer.Models
             get => _conditionType;
             set => Set(ref _conditionType, value);
         }
+
+        public BindableCollection<PriceInfo> MFs { get; set; } = new BindableCollection<PriceInfo>();
+        public BindableCollection<PriceInfo> FBAs { get; set; } = new BindableCollection<PriceInfo>();
+        public BindableCollection<PriceInfo> BuyBoxes { get; set; } = new BindableCollection<PriceInfo>();
+
     }
 }
