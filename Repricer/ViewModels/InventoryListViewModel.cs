@@ -5,6 +5,7 @@ using Repricer.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -131,6 +132,22 @@ namespace Repricer.ViewModels
                     }
                 }
             }
+        }
+
+        public IEnumerable<IResult> ModifyPrice(InventoryItem inventoryItem)
+        {
+            yield return Task.Run(async () =>
+            {
+                var newPrice = await _dialogCoordinator.ShowInputAsync(this, "Update Price", "Please input price.", new MetroDialogSettings
+                {
+                    DefaultText = inventoryItem.CurrentPrice.ToString(CultureInfo.InvariantCulture)
+                });
+                if (string.IsNullOrWhiteSpace(newPrice))
+                    return;
+
+                inventoryItem.CurrentPrice = Decimal.Parse(newPrice);
+
+            }).AsResult();
         }
 
         public IEnumerable<IResult> ImportFBAItems()

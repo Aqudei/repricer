@@ -5,13 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Repricer.Views"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls" 
+             xmlns:cal="http://www.caliburnproject.org" 
              xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
              xmlns:Wpf="clr-namespace:Repricer.Wpf" x:Class="Repricer.Views.InventoryListView"
              mc:Ignorable="d"
              Dialog:DialogParticipation.Register="{Binding}"
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
 
+    <UserControl.Resources>
         <Wpf:SubConditionToStringConverter x:Key="SubConditionToStringConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style x:Key="DataGridColumnHeaderStyle1" TargetType="{x:Type DataGridColumnHeader}">
@@ -137,7 +138,7 @@
                   AutoGenerateColumns="False"
                   Grid.Row="2" Grid.Column="0"
                   ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
-                  Margin="16,16,8,16">
+                  Margin="16,16,8,16" FontSize="14">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Sku" Width="2*" Binding="{Binding Sku}"/>
                 <DataGridTemplateColumn Header="Title" Width="3*" >
@@ -154,18 +155,37 @@
 
                 <DataGridTextColumn Header="Age (days)" Width="1*" Binding="{Binding Age}"/>
                 <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" />
-                <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding CurrentPrice, StringFormat=\{0:C\}}"/>
+                <!--<DataGridHyperlinkColumn Header="Price" Width="1*" Binding="{Binding CurrentPrice, StringFormat=\{0:C\}}"/>-->
 
-                <DataGridTemplateColumn Header="MF" Width="1*" HeaderStyle="{StaticResource CenterGridHeaderStyle}">
+                <DataGridTemplateColumn Header="Current Price">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button HorizontalAlignment="Center" 
+                                    HorizontalContentAlignment="Center"
+                                    cal:Message.Attach="ModifyPrice($dataContext)">
+                                <TextBlock Text="{Binding CurrentPrice, StringFormat=\{0:C\}}"/>
+                            </Button>
+
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="MF" Width="*" HeaderStyle="{StaticResource CenterGridHeaderStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding MFs}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center">
-                                            <Run Text="{Binding SubConditionCode, Converter={StaticResource SubConditionToStringConverter}}"/><Run Text=" "/><Run Text=" - "/>
-                                            <Run Text=" "/><Run Text="{Binding LandedPrice, StringFormat=\{0:C\}}"/>
-                                        </TextBlock>
+                                        <Grid HorizontalAlignment="Center">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding SubConditionCode, Converter={StaticResource SubConditionToStringConverter}}"/>
+                                            <TextBlock Text=" - " Grid.Column="1"/>
+                                            <TextBlock Text="{Binding LandedPrice, StringFormat=\{0:C\}}" Grid.Column="2"/>
+                                        </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
@@ -173,33 +193,39 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="FBA" Width="1*" HeaderStyle="{StaticResource CenterGridHeaderStyle}">
+                <DataGridTemplateColumn Header="FBA" Width="*" HeaderStyle="{StaticResource CenterGridHeaderStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ItemsControl ItemsSource="{Binding FBAs}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center">
-                                            <Run Text="{Binding SubConditionCode, Converter={StaticResource SubConditionToStringConverter}}"/>
-                                            <Run Text=" "/><Run Text=" - "/><Run Text=" "/><Run Text="{Binding LandedPrice, StringFormat=\{0:C\}}"/>
-                                        </TextBlock>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <Grid HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding SubConditionCode, Converter={StaticResource SubConditionToStringConverter}}"/>
+                                <TextBlock Text=" - " Grid.Column="1"/>
+                                <TextBlock Text="{Binding LandedPrice, StringFormat=\{0:C\}}" Grid.Column="2"/>
+                            </Grid>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Header="Buy Box" Width="1*" HeaderStyle="{StaticResource CenterGridHeaderStyle}">
+                <DataGridTemplateColumn Header="Buy Box" Width="*" HeaderStyle="{StaticResource CenterGridHeaderStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ItemsControl ItemsSource="{Binding BuyBoxes}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock HorizontalAlignment="Center">
-                                            <Run Text="{Binding SubConditionCode, Converter={StaticResource SubConditionToStringConverter}}"/>
-                                            <Run Text=" "/><Run Text=" - "/><Run Text=" "/><Run Text="{Binding LandedPrice, StringFormat=\{0:C\}}"/>
-                                        </TextBlock>
+                                        <Grid HorizontalAlignment="Center">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding SubConditionCode, Converter={StaticResource SubConditionToStringConverter}}"/>
+                                            <TextBlock Text=" - " Grid.Column="1"/>
+                                            <TextBlock Text="{Binding LandedPrice, StringFormat=\{0:C\}}" Grid.Column="2"/>
+                                        </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
