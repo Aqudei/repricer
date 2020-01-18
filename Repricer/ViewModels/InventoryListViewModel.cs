@@ -45,8 +45,8 @@ namespace Repricer.ViewModels
             _mapper = mapper;
             _dialogCoordinator = dialogCoordinator;
 
-            Task.Run(LoadItems);
-            Task.Run(PopulateOfferPrices);
+            Task.Run(() => LoadItems());
+            Task.Run(() => PopulateOfferPrices());
         }
 
         public IEnumerable<IResult> GenerateFeedFile()
