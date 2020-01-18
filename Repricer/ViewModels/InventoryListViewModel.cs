@@ -27,8 +27,7 @@ namespace Repricer.ViewModels
         private bool _isBusy;
         private List<PricedOffersResultWithAttribute> _priceResults = new List<PricedOffersResultWithAttribute>();
 
-        private IPricingQueryClient _client = new PricingQueryClient();
-        private InventoryItem selectedInventoryItem;
+        private readonly IPricingQueryClient _client = new PricingQueryClient();
 
         public BindableCollection<InventoryItem> InventoryItems { get; set; }
             = new BindableCollection<InventoryItem>();
@@ -44,8 +43,13 @@ namespace Repricer.ViewModels
             _mapper = mapper;
             _dialogCoordinator = dialogCoordinator;
 
-            Task.Run(() => LoadItems());
-            Task.Run(() => PopulateOfferPrices());
+            Task.Run(LoadItems);
+            Task.Run(PopulateOfferPrices);
+        }
+
+        public void GenerateFeedFile()
+        {
+
         }
 
         private void PopulateOfferPrices()

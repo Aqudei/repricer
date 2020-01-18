@@ -163,6 +163,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FBAInventoryMap.cs" />
+    <Compile Include="Models\FeedFileRow.cs" />
     <Compile Include="Models\InventoryItem.cs" />
     <Compile Include="Models\ListedItem.cs" />
     <Compile Include="Models\FBAInventoryItem.cs" />
