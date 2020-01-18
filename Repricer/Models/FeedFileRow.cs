@@ -9,7 +9,7 @@ namespace Repricer.Models
     class FeedFileRow
     {
         public string Sku { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
     }
 }

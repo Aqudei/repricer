@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CsvHelper;
 using MahApps.Metro.Controls.Dialogs;
 using RepricerPriceDataApiClientTypes.Models;
 using RepricerPriceDataApiClientInterfaces;
@@ -47,9 +48,35 @@ namespace Repricer.ViewModels
             Task.Run(PopulateOfferPrices);
         }
 
-        public void GenerateFeedFile()
+        public IEnumerable<IResult> GenerateFeedFile()
         {
+            yield return Task.Run(() =>
+            {
+                var saveFileDialog = new SaveFileDialog
+                {
+                    DefaultExt = ".txt",
+                    FileName = "FeedFile.tsv"
+                };
 
+                var result = saveFileDialog.ShowDialog();
+                if (!result.HasValue || !result.Value)
+                    return;
+
+                using (var stream = new StreamWriter(saveFileDialog.FileName, false))
+                {
+                    var writer = new CsvWriter(stream, false);
+                    writer.Configuration.RegisterClassMap<FeedFileRowMap>();
+                    writer.Configuration.Delimiter = "\t";
+                    writer.WriteRecords(InventoryItems.Select(item => new FeedFileRow
+                    {
+                        Price = (double)item.CurrentPrice,
+                        Sku = item.Sku
+                    }));
+                    writer.Flush();
+                }
+
+                Process.Start("explorer.exe", $"{Path.GetDirectoryName(saveFileDialog.FileName)}");
+            }).AsResult();
         }
 
         private void PopulateOfferPrices()
@@ -226,7 +253,15 @@ namespace Repricer.ViewModels
                 }
             }
 
-            PopulateOfferPrices();
+            try
+            {
+                PopulateOfferPrices();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Unable to Fetch data from remote service.");
+                Debug.WriteLine(e);
+            }
         }
 
         private void QueryRemote()

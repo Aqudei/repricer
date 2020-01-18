@@ -129,7 +129,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="1">
             <Button x:Name="ImportActiveListing" Margin="1" Content="Import Active Listing"/>
             <Button x:Name="ImportFBAItems" Margin="1" Content="Import FBA Items"/>
-
+            <Button x:Name="GenerateFeedFile" Margin="1" Content="Generate Feed File"/>
         </StackPanel>
 
         <DataGrid x:Name="InventoryItems" 
