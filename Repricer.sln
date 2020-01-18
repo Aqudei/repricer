@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repricer", "Repricer\Repricer.csproj", "{04BB9D90-E4BE-4C1A-B939-7400A6CE2285}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepricerPriceDataApiClient", "..\RepricerPriceDataApiClientSample\RepricerPriceDataApiClient\RepricerPriceDataApiClient.csproj", "{33723B91-4BEC-42F2-88B2-397B73B03F68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepricerPriceDataApiClient", "RepricerPriceDataApiClient\RepricerPriceDataApiClient.csproj", "{33723B91-4BEC-42F2-88B2-397B73B03F68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepricerPriceDataApiClientInterfaces", "..\RepricerPriceDataApiClientSample\RepricerPriceDataApiClientInterfaces\RepricerPriceDataApiClientInterfaces.csproj", "{297CD4C3-9D3D-4DB6-8563-E81D0AE5C837}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepricerPriceDataApiClientInterfaces", "RepricerPriceDataApiClientInterfaces\RepricerPriceDataApiClientInterfaces.csproj", "{297CD4C3-9D3D-4DB6-8563-E81D0AE5C837}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepricerPriceDataApiClientTypes", "..\RepricerPriceDataApiClientSample\RepricerPriceDataApiClientTypes\RepricerPriceDataApiClientTypes.csproj", "{BB20CED2-43A6-4B5D-9039-C6DAF1283166}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepricerPriceDataApiClientTypes", "RepricerPriceDataApiClientTypes\RepricerPriceDataApiClientTypes.csproj", "{BB20CED2-43A6-4B5D-9039-C6DAF1283166}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
