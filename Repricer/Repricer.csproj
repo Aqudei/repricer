@@ -145,21 +145,9 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Events\DBLoaded.cs" />
     <Compile Include="Events\ItemsImported.cs" />
-    <Compile Include="Migrations\201912090819180_firstMigration.cs" />
-    <Compile Include="Migrations\201912090819180_firstMigration.designer.cs">
-      <DependentUpon>201912090819180_firstMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912090920520_doubleToDecimal.cs" />
-    <Compile Include="Migrations\201912090920520_doubleToDecimal.designer.cs">
-      <DependentUpon>201912090920520_doubleToDecimal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912090941026_random.cs" />
-    <Compile Include="Migrations\201912090941026_random.designer.cs">
-      <DependentUpon>201912090941026_random.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201912090942474_random1.cs" />
-    <Compile Include="Migrations\201912090942474_random1.designer.cs">
-      <DependentUpon>201912090942474_random1.cs</DependentUpon>
+    <Compile Include="Migrations\202001180621359_Initial.cs" />
+    <Compile Include="Migrations\202001180621359_Initial.designer.cs">
+      <DependentUpon>202001180621359_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\FBAInventoryMap.cs" />
@@ -207,17 +195,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201912090819180_firstMigration.resx">
-      <DependentUpon>201912090819180_firstMigration.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912090920520_doubleToDecimal.resx">
-      <DependentUpon>201912090920520_doubleToDecimal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912090941026_random.resx">
-      <DependentUpon>201912090941026_random.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201912090942474_random1.resx">
-      <DependentUpon>201912090942474_random1.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202001180621359_Initial.resx">
+      <DependentUpon>202001180621359_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

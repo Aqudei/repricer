@@ -249,6 +249,9 @@ namespace Repricer.ViewModels
             using (var db = new RepricerContext())
             {
                 InventoryItems.Clear();
+                if (!db.FBAInventoryItems.Any())
+                    return;
+
                 InventoryItems.AddRange(db.FBAInventoryItems.ProjectTo<InventoryItem>(_mapper.ConfigurationProvider));
 
                 foreach (var inventoryItem in InventoryItems)

@@ -7,13 +7,13 @@ namespace Repricer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.0")]
-    public sealed partial class doubleToDecimal : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(doubleToDecimal));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201912090920520_doubleToDecimal"; }
+            get { return "202001180621359_Initial"; }
         }
         
         string IMigrationMetadata.Source
