@@ -4,6 +4,7 @@ using Repricer.Events;
 using Repricer.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -177,6 +178,17 @@ namespace Repricer.ViewModels
                     return;
 
                 inventoryItem.CurrentPrice = Decimal.Parse(newPrice);
+
+                using (var db = new RepricerContext())
+                {
+                    var inDb = db.ListedItems.FirstOrDefault(i => i.SellerSku == inventoryItem.Sku);
+                    if (inDb == null)
+                        return;
+                    inDb.Price = inventoryItem.CurrentPrice;
+
+                    db.Entry(inDb).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
 
             }).AsResult();
         }
