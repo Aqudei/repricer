@@ -13,7 +13,7 @@ namespace Repricer.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202001180621359_Initial"; }
+            get { return "202001220721385_Initial"; }
         }
         
         string IMigrationMetadata.Source
